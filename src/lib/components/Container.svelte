@@ -12,7 +12,7 @@
 	{@render children()}
 
 	{#if text}
-		<div class="w-5xl space-y-6 text-justify">
+		<div class="flex w-5xl flex-col items-center gap-y-6 text-justify">
 			{@render text()}
 		</div>
 	{/if}

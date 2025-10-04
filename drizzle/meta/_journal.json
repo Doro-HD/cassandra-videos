@@ -1,0 +1,41 @@
+{
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1759149663374,
+			"tag": "0000_ordinary_silvermane",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1759224240121,
+			"tag": "0001_strong_iron_fist",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1759264385705,
+			"tag": "0002_eminent_amphibian",
+			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1759403412764,
+			"tag": "0003_fantastic_crystal",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1759429750430,
+			"tag": "0004_acoustic_colossus",
+			"breakpoints": true
+		}
+	]
+}

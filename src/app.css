@@ -1,4 +1,7 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-   themes: light --default fantasy, dark --prefersdark halloween;
+	themes:
+		light --default fantasy,
+		dark --prefersdark halloween;
 }
+@plugin "@iconify/tailwind4";
