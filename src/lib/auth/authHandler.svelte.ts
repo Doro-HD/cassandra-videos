@@ -15,7 +15,7 @@ function denyAuthorizedUsers() {
 	const session = authClient.useSession();
 
 	$effect(() => {
-		if (!session.value?.data) {
+		if (session.value?.data) {
 			goto('/');
 		}
 	});
