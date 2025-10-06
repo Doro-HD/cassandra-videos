@@ -48,9 +48,9 @@
 			<h1>End time</h1>
 			<hr />
 			<div class="flex gap-x-2">
-				<NumberInput label="Min" value={endTimeMin}></NumberInput>
+				<NumberInput label="Min" bind:value={endTimeMin}></NumberInput>
 
-				<NumberInput label="Sec" value={endTimeSec} max={59}></NumberInput>
+				<NumberInput label="Sec" bind:value={endTimeSec} max={59}></NumberInput>
 			</div>
 		{/snippet}
 	</Card.Root>
