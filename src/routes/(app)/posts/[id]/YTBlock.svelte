@@ -40,9 +40,9 @@
 			<h1>Start time</h1>
 			<hr />
 			<div class="flex gap-x-2">
-				<NumberInput label="Min" value={startTimeMin}></NumberInput>
+				<NumberInput label="Min" bind:value={startTimeMin}></NumberInput>
 
-				<NumberInput label="Sec" value={startTimeSec} max={59}></NumberInput>
+				<NumberInput label="Sec" bind:value={startTimeSec} max={59}></NumberInput>
 			</div>
 
 			<h1>End time</h1>
