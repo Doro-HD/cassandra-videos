@@ -10,7 +10,7 @@
 </script>
 
 <div class="flex w-full text-start">
-	<div class="relative w-full pe-15">
+	<div class="group relative w-full pe-15">
 		{#if isEditing}
 			<DeleteBlockButton onclick={onDelete}></DeleteBlockButton>
 			<textarea class="textarea h-30 w-full" bind:value={text}></textarea>

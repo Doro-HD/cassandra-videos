@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
+	import { Card } from '$lib/components';
 	import YTIFrame from '$lib/components/YTIFrame.svelte';
 	import NumberInput from './NumberInput.svelte';
 	import DeleteBlockButton from './DeleteBlockButton.svelte';
@@ -25,8 +25,15 @@
 </script>
 
 {#if isEditing}
-	<DeleteBlockButton onclick={onDelete}></DeleteBlockButton>
-	<Card title="Youtube video">
+	<Card.Root class="group">
+		{#snippet header()}
+			<div class="relative">
+				<Card.Title>Youtube video</Card.Title>
+
+				<DeleteBlockButton buttonVariant={{ size: 'xs' }} onclick={onDelete}></DeleteBlockButton>
+			</div>
+		{/snippet}
+
 		{#snippet content()}
 			<input class="input w-full" type="text" placeholder="Video ID" bind:value={videoID} />
 
@@ -46,7 +53,7 @@
 				<NumberInput label="Sec" value={endTimeSec} max={59}></NumberInput>
 			</div>
 		{/snippet}
-	</Card>
+	</Card.Root>
 {:else}
 	<YTIFrame
 		{videoID}

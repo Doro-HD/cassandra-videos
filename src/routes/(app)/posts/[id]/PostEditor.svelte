@@ -1,14 +1,13 @@
 <script lang="ts">
-	import FloatContainer from '$lib/components/FloatContainer.svelte';
 	import Tooltip from '$lib/components/Tooltip.svelte';
 	import { Button } from '$lib/components/button';
 	import Modal from '$lib/components/Modal.svelte';
 
 	type TProps = {
-		onSave: () => Promise<void>;
+		formID: string;
 		closeEditor: () => void;
 	};
-	const { onSave, closeEditor }: TProps = $props();
+	const { formID, closeEditor }: TProps = $props();
 
 	let isDiscardWarningOpen = $state(false);
 </script>
@@ -37,10 +36,8 @@
 	<Button
 		variant={{ color: 'success', shape: { circle: true } }}
 		aria-label="Save changes"
-		onclick={async () => {
-			await onSave();
-			closeEditor();
-		}}
+		type="submit"
+		form={formID}
 	>
 		<span class="icon-[lucide--check]"></span>
 	</Button>

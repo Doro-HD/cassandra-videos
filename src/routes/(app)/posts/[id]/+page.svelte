@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import type { PageProps } from './$types';
-	import { invalidateAll } from '$app/navigation';
 
 	import { type ArrayElement } from '$lib/util';
 	import { authClient } from '$lib/auth';
@@ -12,7 +12,7 @@
 	import YTBlock from './YTBlock.svelte';
 	import PostEditor from './PostEditor.svelte';
 	import FloatContainer from '$lib/components/FloatContainer.svelte';
-	import { updatePostBlocks } from './data.remote';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	type TExistingBlock = ArrayElement<typeof existingBlocks>;
 	type TClientBlock = Omit<ArrayElement<typeof existingBlocks>, 'id'>;
@@ -27,6 +27,18 @@
 	const blocks = $derived([...existingBlocks, ...newBlocks]);
 
 	const session = authClient.useSession();
+
+	const updateBlocks: SubmitFunction = async ({ formData }) => {
+		formData.append('postID', data.post.id);
+		formData.append('postTitle', data.post.title);
+		formData.append('blocks', JSON.stringify(blocks));
+		formData.append('deletedBlocks', JSON.stringify(deletedBlocks));
+
+		return ({ update }) => {
+			isEditing = false;
+			update();
+		};
+	};
 
 	function addBlock(blockData: Pick<TClientBlock, 'data'>['data']) {
 		const order = ++highestOrder;
@@ -55,16 +67,6 @@
 		});
 	}
 
-	async function updateBlocks() {
-		updatePostBlocks({
-			postId: data.post.id,
-			title: data.post.title,
-			blocks,
-			deletedBlocks
-		});
-		invalidateAll();
-	}
-
 	async function deleteBlock(deletedBlock: { id?: string; order: number }) {
 		const removeDeletedBlock = (block: TClientBlock) => block.order !== deletedBlock.order;
 		const updateBlockOrder = <T extends TClientBlock | TExistingBlock>(block: T): T => {
@@ -90,7 +92,8 @@
 	{#if $session.data}
 		<FloatContainer>
 			{#if isEditing}
-				<PostEditor onSave={updateBlocks} closeEditor={() => (isEditing = false)}></PostEditor>
+				<PostEditor formID="update-post-blocks" closeEditor={() => (isEditing = false)}
+				></PostEditor>
 			{:else}
 				<Tooltip text="Edit post" variant={{ direction: 'left' }}>
 					<Button
@@ -109,22 +112,29 @@
 		<h1 class="text-3xl font-bold">{data.post.title}</h1>
 
 		{#snippet text()}
-			{#each blocks as block (block.order)}
-				{#if block.data.type === 'text'}
-					<TextBlock bind:text={block.data.text} {isEditing} onDelete={() => deleteBlock(block)}
-					></TextBlock>
-				{:else if block.data.type === 'youtube'}
-					<YTBlock
-						{isEditing}
-						onDelete={() => deleteBlock(block)}
-						bind:videoID={block.data.vidioID}
-						bind:startTimeMin={block.data.startTimeMin}
-						bind:startTimeSec={block.data.startTimeSec}
-						bind:endTimeMin={block.data.endTimeMin}
-						bind:endTimeSec={block.data.endTimeSec}
-					></YTBlock>
-				{/if}
-			{/each}
+			<form
+				id="update-post-blocks"
+				class="flex w-5xl flex-col items-center gap-y-6 text-justify"
+				method="POST"
+				use:enhance={updateBlocks}
+			>
+				{#each blocks as block (block.order)}
+					{#if block.data.type === 'text'}
+						<TextBlock bind:text={block.data.text} {isEditing} onDelete={() => deleteBlock(block)}
+						></TextBlock>
+					{:else if block.data.type === 'youtube'}
+						<YTBlock
+							{isEditing}
+							onDelete={() => deleteBlock(block)}
+							bind:videoID={block.data.vidioID}
+							bind:startTimeMin={block.data.startTimeMin}
+							bind:startTimeSec={block.data.startTimeSec}
+							bind:endTimeMin={block.data.endTimeMin}
+							bind:endTimeSec={block.data.endTimeSec}
+						></YTBlock>
+					{/if}
+				{/each}
+			</form>
 			{#if $session.data}
 				{#if isEditing}
 					<Dropdown.Root>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import Container from '$lib/components/Container.svelte';
-	import Card from '$lib/components/Card.svelte';
+	import { Card } from '$lib/components';
 	import PostForm from './PostForm.svelte';
 
 	const { data }: PageProps = $props();
@@ -14,15 +14,23 @@
 
 	{#await data.posts then posts}
 		{#each posts as post}
-			<Card title={post.title}>
+			<Card.Root>
+				{#snippet header()}
+					<Card.Title>
+						{post.title}
+					</Card.Title>
+				{/snippet}
+
 				{#snippet content()}
 					<p>{post.description}</p>
 				{/snippet}
 
-				{#snippet actions()}
-					<a class="btn btn-primary" href="/posts/{post.id}">Read</a>
+				{#snippet footer()}
+					<Card.Actions>
+						<a class="btn btn-primary" href="/posts/{post.id}">Read</a>
+					</Card.Actions>
 				{/snippet}
-			</Card>
+			</Card.Root>
 		{/each}
 	{/await}
 </Container>

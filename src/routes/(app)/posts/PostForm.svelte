@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { authClient } from '$lib/auth';
 	import Modal from '$lib/components/Modal.svelte';
-	import { createPost } from './data.remote';
 
 	const session = authClient.useSession();
 </script>
@@ -22,7 +22,12 @@
 	{#snippet content()}
 		<h3 class="pb-2 text-xl font-bold">Create post</h3>
 
-		<form id="create-post-form" class="flex flex-col items-center gap-y-2" {...createPost}>
+		<form
+			id="create-post-form"
+			method="POST"
+			class="flex flex-col items-center gap-y-2"
+			use:enhance
+		>
 			<input class="input" type="text" placeholder="Title" name="title" />
 
 			<textarea class="textarea" placeholder="Description" name="description"></textarea>

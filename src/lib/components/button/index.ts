@@ -5,11 +5,14 @@ type TProps = {
 	variant?: {
 		color?: 'error' | 'success';
 		shape?: { circle: boolean };
+		size?: "xs" | "sm" | "md" | "lg" | "xl"
 	};
 	style?: string;
 	popovertarget?: string;
 	'aria-label'?: string;
-	onclick: () => void;
+	type?: "submit";
+	form?: string;
+	onclick?: () => void;
 	children: Snippet;
 };
 
